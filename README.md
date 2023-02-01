@@ -20,6 +20,7 @@ name: CI devops 2023
   push:
     branches:
      - main # lance le job uniquement lorsqu'un code est  push sur la branche principale
+  pull_request:
 
 # Définit le job nommé test-backend
 jobs:
@@ -99,7 +100,7 @@ jobs:
       - name: Login to DockerHub
         run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Construction et publication de l'image pour le service backend
+      # Construit et publie l'image pour le service backend
       - name: Build image and push backend
         uses: docker/build-push-action@v3
         with:
@@ -107,7 +108,7 @@ jobs:
           context: ./simple-api
           # Nom de tag de l'image Docker en minuscules
           tags:  ${{secrets.DOCKERHUB_USERNAME}}/docker-api
-          # Publication uniquement pour la branche "main"
+          # Push sur la branche "main"
 
       - name: Build image and push database
         uses: docker/build-push-action@v3
@@ -219,4 +220,8 @@ Les critères incluent:
 * Tous les points de sécurité doivent être examinés 
 * La notation de sécurité doit être A
 
+**Résultats obtenus**
+![alt text](./screen/sonar-cloud-quality-gate-project.png)
+
+**Normes**
 ![alt text](./screen/sonar-cloud-quality-gate.png)
